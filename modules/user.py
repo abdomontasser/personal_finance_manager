@@ -6,11 +6,18 @@ class User:
     self.password = password
     self.currency = currency
     self.id = str(uuid.uuid4())
+    self.transactions = []
 
+  def add_transaction(self, transaction):
+    self.transactions.append(transaction)
+
+  def verify_password(self, entered_password):
+    return self.password == entered_password
   def convert(self):
     return {
+      "user_id": self.user_id,
       "name": self.name,
       "password": self.password,
       "currency": self.currency,
-      "user_id": self.id
+      "transactions": [t.convert() for t in self.transactions]
     }
