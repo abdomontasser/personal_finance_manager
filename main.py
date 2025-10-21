@@ -1,5 +1,5 @@
 from finance_manger import FinanceManager
-from reports import Reports
+from report_generator import ReportGenerator
 from Search_filter import searchFilter
 
 class App:
@@ -81,12 +81,12 @@ class App:
         choice = input("Choose: ")
 
         if choice == "1":
-            Reports.dashboard(txns, self.current_user["user_id"])
+            ReportGenerator.dashboard(txns, self.current_user["user_id"])
         elif choice == "2":
             month = input("Enter month (YYYY-MM): ")
-            Reports.monthly_report(txns, self.current_user["user_id"], month)
+            ReportGenerator.monthly_report(txns, self.current_user["user_id"], month)
         elif choice == "3":
-            Reports.category_breakdown(txns, self.current_user["user_id"])
+            ReportGenerator.category_breakdown(txns, self.current_user["user_id"])
 
     def search_menu(self):
         txns = self.manager.get_user_transactions(self.current_user["user_id"])
