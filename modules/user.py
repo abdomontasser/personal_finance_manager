@@ -5,7 +5,7 @@ class User:
     self.name =name 
     self.password = password
     self.currency = currency
-    self.id = str(uuid.uuid4())
+    self.user_id = str(uuid.uuid4())
     self.transactions = []
 
   def add_transaction(self, transaction):
@@ -13,11 +13,11 @@ class User:
 
   def verify_password(self, entered_password):
     return self.password == entered_password
-  def convert(self):
+  def to_dict(self):
     return {
       "user_id": self.user_id,
       "name": self.name,
       "password": self.password,
       "currency": self.currency,
-      "transactions": [t.convert() for t in self.transactions]
+      "transactions": [t.to_dict() for t in self.transactions]
     }
