@@ -27,3 +27,4 @@ class Transaction:
   
   def __str__(self):
     return f"{self.date} | {self.type:<7} | {self.category:<10} | {self.amount:>8} | {self.description} ({self.payment_method})"
+
