@@ -7,6 +7,8 @@ class manageData:
         self.data_folder = folder
         self.users_file = os.path.join(folder,users_file)
         self.transaction_file = os.path.join(folder,transaciton_file)
+        self.ensure_folder_exsists()
+        self.ensure_user_file()
 
 
     def ensure_folder_exsists(self):
@@ -25,7 +27,7 @@ class manageData:
         if not os.path.exists(self.transaction_file):
             with open(self.transaction_file,"w",newline="")as f:
                 writer = csv.writer(f)
-                writer.writerow(["transaction_id","type", "amount", "category", "date", "description"])
+                writer.writerow(["transaction_id","user_id", "type", "amount", "category", "date", "description","payment_method"])
             print("Transcation file created")
 
 
@@ -49,7 +51,7 @@ class manageData:
 
     def add_transactions(self,transactions):
         with open(self.transaction_file,"w") as f:
-            fieldnames = ["transaction_id", "type", "amount", "category", "date", "description"]
+            fieldnames = ["transaction_id","user_id", "type", "amount", "category", "date", "description","payment_method"]
             writer = csv.DictWriter(f,fieldnames=fieldnames)
             writer.writeheader()
             writer.writerows(transactions)
