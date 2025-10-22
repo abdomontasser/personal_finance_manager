@@ -1,5 +1,5 @@
-from modules.finance_manger import FinanceManager
-from modules.reports import Reports
+from finance_manger import FinanceManager
+from reports import Reports
 from Search_filter import searchFilter
 
 class App:
