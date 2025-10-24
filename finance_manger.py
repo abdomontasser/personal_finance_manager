@@ -1,6 +1,6 @@
 from User import User
 from Transaction import Transaction
-from data_manger import manageData
+from users_data import manageData
 
 class FinanceManager:
     """Main logic handler that connects users, transactions, and storage"""
