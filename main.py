@@ -1,6 +1,7 @@
 from finance_manger import FinanceManager
 from report_generator import ReportGenerator
 from Search_filter import searchFilter
+<<<<<<< HEAD
 from datetime import datetime
 
 class App:
@@ -8,11 +9,20 @@ class App:
     
     def __init__(self):
         """Initialize the App with a FinanceManager and no current_user."""
+=======
+
+class App:
+    
+    def __init__(self):
+>>>>>>> efabfae6a36f20ce0b535a2e9956c85b44d2e04c
         self.manager = FinanceManager()
         self.current_user = None
 
     def run(self):
+<<<<<<< HEAD
         """Main loop showing the top-level menu and routing user choices."""
+=======
+>>>>>>> efabfae6a36f20ce0b535a2e9956c85b44d2e04c
         while True:
             print("\n==== Personal Finance Manager ====")
             print("1. Register")
@@ -31,6 +41,7 @@ class App:
                 print("Invalid option!")
 
     def register(self):
+<<<<<<< HEAD
         """Collect input and register a new user after basic validation."""
         name = input("Enter name: ").strip()
         password = input("Enter password: ").strip()
@@ -44,13 +55,26 @@ class App:
         """Prompt for credentials and start user menu on successful login."""
         name = input("Username: ").strip()
         password = input("Password: ").strip()
+=======
+        name = input("Enter name: ")
+        password = input("Enter password: ")
+        currency = input("Enter currency (default USD): ") or "USD"
+        self.manager.register_user(name, password, currency)
+
+    def login(self):
+        name = input("Username: ")
+        password = input("Password: ")
+>>>>>>> efabfae6a36f20ce0b535a2e9956c85b44d2e04c
         user = self.manager.login(name, password)
         if user:
             self.current_user = user
             self.user_menu()
 
     def user_menu(self):
+<<<<<<< HEAD
         """Show authenticated user menu and handle actions."""
+=======
+>>>>>>> efabfae6a36f20ce0b535a2e9956c85b44d2e04c
         while True:
             print(f"\n==== Welcome {self.current_user['name']} ====")
             print("1. Add Transaction")
@@ -75,6 +99,7 @@ class App:
                 print("Invalid option!")
 
     def add_transaction(self):
+<<<<<<< HEAD
         """Prompt inputs for a transaction, validate, and forward to manager."""
         t_type = input("Type (income/expense): ").strip().lower()
         if t_type not in ("income", "expense"):
@@ -111,6 +136,17 @@ class App:
 
     def reports_menu(self):
         """Show report options and call ReportGenerator methods."""
+=======
+        t_type = input("Type (income/expense): ")
+        amount = input("Amount: ")
+        category = input("Category: ")
+        desc = input("Description: ")
+        payment_method = input("payment method")
+        date = input("Enter date in format (YYYY-MM-DD)")
+        self.manager.add_transaction(self.current_user["user_id"], t_type, amount, category, desc,payment_method,date)
+
+    def reports_menu(self):
+>>>>>>> efabfae6a36f20ce0b535a2e9956c85b44d2e04c
         txns = self.manager.get_user_transactions(self.current_user["user_id"])
         print("\n1. Dashboard Summary")
         print("2. Monthly Report")
@@ -126,7 +162,10 @@ class App:
             ReportGenerator.category_breakdown(txns, self.current_user["user_id"])
 
     def search_menu(self):
+<<<<<<< HEAD
         """Provide search/filter options and print matching transactions."""
+=======
+>>>>>>> efabfae6a36f20ce0b535a2e9956c85b44d2e04c
         txns = self.manager.get_user_transactions(self.current_user["user_id"])
         print("\n1. Filter by Category")
         print("2. Filter by Date Range")
@@ -142,12 +181,17 @@ class App:
             end = input("End date (YYYY-MM-DD): ")
             results = searchFilter.search_by_range(txns, start, end)
         elif choice == "3":
+<<<<<<< HEAD
             try:
                 min_a = float(input("Min amount: "))
                 max_a = float(input("Max amount: "))
             except ValueError:
                 print("❌ Invalid amount range.")
                 return
+=======
+            min_a = float(input("Min amount: "))
+            max_a = float(input("Max amount: "))
+>>>>>>> efabfae6a36f20ce0b535a2e9956c85b44d2e04c
             results = searchFilter.amount_Range_filter(txns, min_a, max_a)
         elif choice == "4":
             reverse = input("Sort descending? (y/n): ").lower() == "y"

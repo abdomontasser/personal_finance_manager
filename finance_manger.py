@@ -1,6 +1,7 @@
 from User import User
 from Transaction import Transaction
 from users_data import manageData
+<<<<<<< HEAD
 from decimal import Decimal, InvalidOperation
 
 class FinanceManager:
@@ -8,12 +9,20 @@ class FinanceManager:
 
     def __init__(self):
         """Create a FinanceManager instance and load stored users and transactions."""
+=======
+
+class FinanceManager:
+    """Main logic handler that connects users, transactions, and storage"""
+
+    def __init__(self):
+>>>>>>> efabfae6a36f20ce0b535a2e9956c85b44d2e04c
         self.data_manager = manageData()
         self.users = self.data_manager.load_users()
         self.transactions = self.data_manager.load_transactions()
 
     # ----- USERS -----
     def register_user(self, name, password, currency="USD"):
+<<<<<<< HEAD
         """Register a new user after validating required fields.
 
         Args:
@@ -44,12 +53,23 @@ class FinanceManager:
         """
         for user in self.users:
             if user.get("name") == name and user.get("password") == password:
+=======
+        user = User(name, password, currency)
+        self.users.append(user.to_dict())
+        self.data_manager.add_users(self.users)
+        print(f"✅ User '{name}' registered successfully!")
+
+    def login(self, name, password):
+        for user in self.users:
+            if user["name"] == name and user["password"] == password:
+>>>>>>> efabfae6a36f20ce0b535a2e9956c85b44d2e04c
                 print(f"👋 Welcome back, {name}!")
                 return user
         print("❌ Invalid username or password.")
         return None
 
     # Add transaction
+<<<<<<< HEAD
     def add_transaction(self, user_id, t_type, amount, category, description, payment_method, date):
         """Validate and add a transaction for a user, persisting to storage.
 
@@ -88,6 +108,17 @@ class FinanceManager:
             user_id (str): User identifier to filter transactions.
         """
         txns = [t for t in self.transactions if t.get("user_id") == user_id]
+=======
+    def add_transaction(self, user_id, t_type, amount, category, description,payment_method,date):
+        txn = Transaction(user_id, t_type, amount, category, description,payment_method,date)
+        self.transactions.append(txn.to_dict())
+        self.data_manager.add_transactions(self.transactions)
+        print("💾 Transaction added successfully!")
+
+    # View Transaction 
+    def view_transactions(self, user_id):
+        txns = [t for t in self.transactions if t["user_id"] == user_id]
+>>>>>>> efabfae6a36f20ce0b535a2e9956c85b44d2e04c
         if not txns:
             print("⚠️ No transactions found.")
             return
@@ -95,6 +126,7 @@ class FinanceManager:
             print(f"[{t['date']}] {t['category']} - {t['amount']} ({t['type']})")
 
     def get_user_transactions(self, user_id):
+<<<<<<< HEAD
         """Return a list of transaction dicts for the given user_id.
 
         Args:
@@ -104,3 +136,6 @@ class FinanceManager:
             list: transactions for the user.
         """
         return [t for t in self.transactions if t.get("user_id") == user_id]
+=======
+        return [t for t in self.transactions if t["user_id"] == user_id]
+>>>>>>> efabfae6a36f20ce0b535a2e9956c85b44d2e04c
