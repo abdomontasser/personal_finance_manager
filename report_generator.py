@@ -1,4 +1,4 @@
-class Reports:
+class ReportGenerator:
     """Handles financial summaries and statistics"""
 
     @staticmethod
