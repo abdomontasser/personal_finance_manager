@@ -156,6 +156,7 @@ class App:
         print("\n1. Dashboard Summary")
         print("2. Monthly Report")
         print("3. Category Breakdown")
+        print("4. Financial Health Score")  # New option
         choice = input("Choose: ")
 
         if choice == "1":
@@ -165,6 +166,17 @@ class App:
             ReportGenerator.monthly_report(txns, self.current_user["user_id"], month)
         elif choice == "3":
             ReportGenerator.category_breakdown(txns, self.current_user["user_id"])
+        elif choice == "4":
+            result = ReportGenerator.calculate_financial_health(txns, self.current_user["user_id"])
+            print("\n=== Financial Health Score ===")
+            print(f"Overall Score: {result['score']}/100")
+            print("\nBreakdown:")
+            details = result["details"]
+            if isinstance(details, dict):
+                print(f"• Savings Rate: {details['savings_rate']}% ({details['savings_score']} points)")
+                print(f"• Expense Stability: {details['expense_stability']} points")
+                print(f"• Income Stability: {details['income_stability']} points")
+                print(f"• Category Diversity: {details['diversity_score']} points")
 
     def search_menu(self):
         """Provide search/filter options and print matching transactions."""
