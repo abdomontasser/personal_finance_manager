@@ -217,6 +217,40 @@ class App:
         else:
             print("No results found.")
 
+    def import_export_menu(self):
+        """Handle CSV import/export operations."""
+        print("\n=== Import/Export Transactions ===")
+        print("1. Import from CSV")
+        print("2. Export to CSV")
+        print("3. Back")
+        choice = input("Choose: ").strip()
+
+        if choice == "1":
+            path = input("Enter CSV file path to import: ").strip()
+            if not path:
+                print("❌ Invalid path.")
+                return
+            skip_invalid = input("Skip invalid rows? (y/n): ").lower() == 'y'
+            assign_to_current = False
+            if self.current_user:
+                assign_to_current = input("Assign imported transactions to your account? (y/n): ").lower() == 'y'
+            assign_user_id = self.current_user["user_id"] if assign_to_current else None
+            self.manager.import_transactions(path, skip_invalid=skip_invalid, assign_user_id=assign_user_id)
+
+        elif choice == "2":
+            path = input("Enter destination CSV path: ").strip()
+            if not path:
+                print("❌ Invalid path.")
+                return
+            export_all = input("Export all users? (y/n): ").lower() == 'y'
+            user_id = None if export_all else (self.current_user["user_id"] if self.current_user else None)
+            self.manager.export_transactions(path, user_id)
+
+        elif choice == "3":
+            return
+        else:
+            print("Invalid choice!")
+
 
 if __name__ == "__main__":
     App().run()
