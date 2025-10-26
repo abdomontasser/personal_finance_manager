@@ -57,7 +57,9 @@ class App:
             print("2. View Transactions")
             print("3. Reports")
             print("4. Search & Filter")
-            print("5. Logout")
+            print("5. Import/Export")
+            print("6. Savings Goals")
+            print("7. Logout")
             choice = input("Choose: ")
 
             if choice == "1":
@@ -69,10 +71,49 @@ class App:
             elif choice == "4":
                 self.search_menu()
             elif choice == "5":
+                self.import_export_menu()
+            elif choice == "6":
+                self.savings_menu()
+            elif choice == "7":
                 print("Logging out...")
                 break
             else:
                 print("Invalid option!")
+
+    def savings_menu(self):
+        """Manage savings goals: list, add, view progress."""
+        while True:
+            print("\n=== Savings Goals ===")
+            print("1. List goals")
+            print("2. Add goal")
+            print("3. View goal progress")
+            print("4. Back")
+            choice = input("Choose: ")
+
+            if choice == "1":
+                goals = self.manager.get_savings_goals(self.current_user["user_id"])
+                if not goals:
+                    print("No goals found.")
+                else:
+                    for g in goals:
+                        print(f"{g['goal_id']} | {g['name']} | target: {g['target']} | due: {g.get('due_date')}")
+            elif choice == "2":
+                name = input("Goal name: ").strip()
+                target = input("Target amount: ").strip()
+                due = input("Due date (YYYY-MM-DD, optional): ").strip() or None
+                self.manager.add_savings_goal(self.current_user["user_id"], name, target, due)
+            elif choice == "3":
+                gid = input("Enter goal_id: ").strip()
+                prog = self.manager.compute_goal_progress(self.current_user["user_id"], gid)
+                if prog:
+                    print(f"Goal: {prog['name']} — saved {prog['saved']:.2f} / {prog['target']:.2f} ({prog['percent']:.1f}%)")
+            elif choice == "4":
+                return
+            else:
+                print("Invalid choice!")
+            return
+
+        print("✅ Operation completed.")
 
     def add_transaction(self):
         """Prompt inputs for a transaction, validate, and forward to manager."""
