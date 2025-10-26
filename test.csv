@@ -1,0 +1,8 @@
+transaction_id,user_id,type,amount,category,date,description,payment_method
+TXN-E155CD17,740edabe-cd6c-4c3f-9549-273eb8baee9b,income,500.0,food,2025-10-24,food,$
+TXN-207B51EA,740edabe-cd6c-4c3f-9549-273eb8baee9b,income,500.0,40,2025-10-24,40,50
+IMP-9BFCB710,740edabe-cd6c-4c3f-9549-273eb8baee9b,income,500.0,food,2025-10-24,food,$
+IMP-272CD3AB,740edabe-cd6c-4c3f-9549-273eb8baee9b,income,500.0,40,2025-10-24,40,50
+TXN-F3A91B2C,740edabe-cd6c-4c3f-9549-273eb8baee9b,expense,100.0,groceries,2025-10-24,weekly shopping,cash
+TXN-D4E82F1A,740edabe-cd6c-4c3f-9549-273eb8baee9b,income,1000.0,salary,2025-10-25,monthly salary,bank
+TXN-B7C93D5E,740edabe-cd6c-4c3f-9549-273eb8baee9b,expense,300.0,rent,2025-10-25,apartment rent,bank

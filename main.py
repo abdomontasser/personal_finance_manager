@@ -57,7 +57,9 @@ class App:
             print("2. View Transactions")
             print("3. Reports")
             print("4. Search & Filter")
-            print("5. Logout")
+            print("5. Import/Export")
+            print("6. Savings Goals")
+            print("7. Logout")
             choice = input("Choose: ")
 
             if choice == "1":
@@ -69,10 +71,49 @@ class App:
             elif choice == "4":
                 self.search_menu()
             elif choice == "5":
+                self.import_export_menu()
+            elif choice == "6":
+                self.savings_menu()
+            elif choice == "7":
                 print("Logging out...")
                 break
             else:
                 print("Invalid option!")
+
+    def savings_menu(self):
+        """Manage savings goals: list, add, view progress."""
+        while True:
+            print("\n=== Savings Goals ===")
+            print("1. List goals")
+            print("2. Add goal")
+            print("3. View goal progress")
+            print("4. Back")
+            choice = input("Choose: ")
+
+            if choice == "1":
+                goals = self.manager.get_savings_goals(self.current_user["user_id"])
+                if not goals:
+                    print("No goals found.")
+                else:
+                    for g in goals:
+                        print(f"{g['goal_id']} | {g['name']} | target: {g['target']} | due: {g.get('due_date')}")
+            elif choice == "2":
+                name = input("Goal name: ").strip()
+                target = input("Target amount: ").strip()
+                due = input("Due date (YYYY-MM-DD, optional): ").strip() or None
+                self.manager.add_savings_goal(self.current_user["user_id"], name, target, due)
+            elif choice == "3":
+                gid = input("Enter goal_id: ").strip()
+                prog = self.manager.compute_goal_progress(self.current_user["user_id"], gid)
+                if prog:
+                    print(f"Goal: {prog['name']} — saved {prog['saved']:.2f} / {prog['target']:.2f} ({prog['percent']:.1f}%)")
+            elif choice == "4":
+                return
+            else:
+                print("Invalid choice!")
+            return
+
+        print("✅ Operation completed.")
 
     def add_transaction(self):
         """Prompt inputs for a transaction, validate, and forward to manager."""
@@ -115,6 +156,7 @@ class App:
         print("\n1. Dashboard Summary")
         print("2. Monthly Report")
         print("3. Category Breakdown")
+        print("4. Financial Health Score")  # New option
         choice = input("Choose: ")
 
         if choice == "1":
@@ -124,6 +166,17 @@ class App:
             ReportGenerator.monthly_report(txns, self.current_user["user_id"], month)
         elif choice == "3":
             ReportGenerator.category_breakdown(txns, self.current_user["user_id"])
+        elif choice == "4":
+            result = ReportGenerator.calculate_financial_health(txns, self.current_user["user_id"])
+            print("\n=== Financial Health Score ===")
+            print(f"Overall Score: {result['score']}/100")
+            print("\nBreakdown:")
+            details = result["details"]
+            if isinstance(details, dict):
+                print(f"• Savings Rate: {details['savings_rate']}% ({details['savings_score']} points)")
+                print(f"• Expense Stability: {details['expense_stability']} points")
+                print(f"• Income Stability: {details['income_stability']} points")
+                print(f"• Category Diversity: {details['diversity_score']} points")
 
     def search_menu(self):
         """Provide search/filter options and print matching transactions."""
@@ -163,6 +216,40 @@ class App:
                 print(f"{t['transaction_id']} | {t['date']} | {t['type']} | {t['category']} | {float(t['amount'])}")
         else:
             print("No results found.")
+
+    def import_export_menu(self):
+        """Handle CSV import/export operations."""
+        print("\n=== Import/Export Transactions ===")
+        print("1. Import from CSV")
+        print("2. Export to CSV")
+        print("3. Back")
+        choice = input("Choose: ").strip()
+
+        if choice == "1":
+            path = input("Enter CSV file path to import: ").strip()
+            if not path:
+                print("❌ Invalid path.")
+                return
+            skip_invalid = input("Skip invalid rows? (y/n): ").lower() == 'y'
+            assign_to_current = False
+            if self.current_user:
+                assign_to_current = input("Assign imported transactions to your account? (y/n): ").lower() == 'y'
+            assign_user_id = self.current_user["user_id"] if assign_to_current else None
+            self.manager.import_transactions(path, skip_invalid=skip_invalid, assign_user_id=assign_user_id)
+
+        elif choice == "2":
+            path = input("Enter destination CSV path: ").strip()
+            if not path:
+                print("❌ Invalid path.")
+                return
+            export_all = input("Export all users? (y/n): ").lower() == 'y'
+            user_id = None if export_all else (self.current_user["user_id"] if self.current_user else None)
+            self.manager.export_transactions(path, user_id)
+
+        elif choice == "3":
+            return
+        else:
+            print("Invalid choice!")
 
 
 if __name__ == "__main__":
